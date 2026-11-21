@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Demo Payment Successful{% endblock %}
+{% block crumb %}Demo Payment Successful{% endblock %}
+{% block content %}
+<section class="panel p-4 text-center" style="max-width:650px;margin:40px auto">
+  <div style="font-size:64px;color:#16a36a">✓</div><h1>Demo Payment Successful!</h1>
+  <h2 class="mt-3">{{ money(donation.amount) }}</h2><p>{{ donation.purpose }} donation</p>
+  <span class="badge text-bg-success">SIMULATED — NO REAL MONEY TRANSFERRED</span>
+  <p class="mt-3">Your virtual payment has been recorded. The donation request is still <strong>{{ donation.status }}</strong> and enters protected funds only after Admin approval.</p>
+  <p><strong>Reference:</strong> {{ donation.qr_reference }}</p>
+  <a class="btn-primary mt-3" href="{{ url_for('donation_qr', reference=donation.qr_reference) }}">View donation status</a>
+</section>
+{% endblock %}

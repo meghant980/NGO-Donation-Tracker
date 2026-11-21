@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Transaction History{% endblock %}
+{% block crumb %}Transaction History{% endblock %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">AUDIT TRAIL</div><h1>Transaction History</h1><p>Approved and blocked activity is kept visible for accountability.</p></div></div>
+<section class="panel"><div class="filter-bar"><div class="search-box"><i class="bi bi-search"></i><input id="ledgerSearch" placeholder="Search transactions..."></div><select id="statusFilter"><option value="">All statuses</option><option>Donation</option><option>Expense</option><option>Blocked</option></select></div>
+<div class="table-responsive"><table class="modern-table" id="ledgerTable"><thead><tr><th>Type</th><th>Purpose</th><th>Description</th><th>Amount</th><th>Timestamp</th></tr></thead><tbody>
+{% for t in transactions %}<tr data-status="{{ t.transaction_type }}"><td><span class="type-pill {{ t.transaction_type|lower }}">{{ t.transaction_type }}</span></td><td><span class="tag">{{ t.purpose }}</span></td><td>{{ t.description }}</td><td class="{{ 'amount-positive' if t.transaction_type=='Donation' else 'amount-negative' }}">{{ '+' if t.transaction_type=='Donation' else '-' }}{{ money(t.amount) }}</td><td>{{ t.created_at }}</td></tr>{% else %}<tr><td colspan="5"><div class="empty"><i class="bi bi-inbox"></i><h3>Ledger is empty</h3></div></td></tr>{% endfor %}
+</tbody></table></div></section>
+<section class="panel mt-4"><div class="panel-head"><div><h2>Blocked attempts</h2><p>These requests were rejected by the protection rules.</p></div></div>
+<div class="blocked-list">{% for e in expenses if e.status=='Blocked' %}<div class="blocked-item"><div class="blocked-icon"><i class="bi bi-shield-x"></i></div><div><strong>{{ e.description }}</strong><span>{{ e.purpose }} · {{ money(e.amount) }} · {{ e.created_at }}</span></div><em>{{ e.rejection_reason }}</em></div>{% else %}<div class="empty compact"><i class="bi bi-shield-check"></i><p>No blocked expenses. Protection is ready.</p></div>{% endfor %}</div></section>
+{% endblock %}
+{% block scripts %}<script>
+const q=document.getElementById('ledgerSearch'),f=document.getElementById('statusFilter');
+function filterLedger(){const term=q.value.toLowerCase(),status=f.value;document.querySelectorAll('#ledgerTable tbody tr').forEach(r=>{const okText=r.innerText.toLowerCase().includes(term),okStatus=!status||r.dataset.status===status;r.style.display=(okText&&okStatus)?'':'none'})}q.addEventListener('input',filterLedger);f.addEventListener('change',filterLedger);
+</script>{% endblock %}

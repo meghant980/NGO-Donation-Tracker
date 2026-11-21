@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Transparency{% endblock %}
+{% block crumb %}Transparency{% endblock %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">PUBLIC VIEW</div><h1>Transparency center</h1><p>A simple, donor-friendly view of where protected funds came from and where they went.</p></div><button class="btn-secondary" onclick="window.print()"><i class="bi bi-printer"></i> Print report</button></div>
+<div class="transparency-hero"><div class="shield-xl"><i class="bi bi-shield-check"></i></div><div><span>FUNDS PROTECTED BY PURPOSE</span><h2>Every rupee has a destination.</h2><p>Donations are separated by purpose and expenses are validated before they can reduce a fund.</p></div></div>
+<div class="fund-card-grid">
+{% for f in funds %}<div class="mini-trans-card"><div><span class="big-fund-icon">{{ f.icon }}</span><strong>{{ f.purpose }}</strong></div><b>{{ money(f.available) }}</b><small>remaining · {{ money(f.spent) }} utilized</small></div>{% endfor %}
+</div>
+<section class="panel mt-4"><div class="panel-head"><div><h2>Money in</h2><p>Recent donor contributions.</p></div></div>
+<div class="table-responsive"><table class="modern-table"><thead><tr><th>Donor</th><th>Purpose</th><th>Amount</th><th>Date</th></tr></thead><tbody>{% for d in donations %}<tr><td><strong>{{ d.donor_name }}</strong></td><td><span class="tag">{{ d.purpose }}</span></td><td class="amount-positive">+{{ money(d.amount) }}</td><td>{{ d.created_at }}</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel mt-4"><div class="panel-head"><div><h2>Money out</h2><p>Only approved expenses reduce protected funds.</p></div></div>
+<div class="table-responsive"><table class="modern-table"><thead><tr><th>Expense</th><th>Purpose</th><th>Amount</th><th>Date</th></tr></thead><tbody>{% for e in expenses %}<tr><td><strong>{{ e.description }}</strong><small>{{ e.vendor or '—' }}</small></td><td><span class="tag">{{ e.purpose }}</span></td><td class="amount-negative">-{{ money(e.amount) }}</td><td>{{ e.created_at }}</td></tr>{% else %}<tr><td colspan="4"><div class="empty compact"><p>No approved expenses yet.</p></div></td></tr>{% endfor %}</tbody></table></div></section>
+{% if blocked %}<section class="panel mt-4"><div class="panel-head"><div><h2>Blocked by protection</h2><p>Attempts that did not meet fund rules.</p></div></div>{% for e in blocked %}<div class="blocked-item"><div class="blocked-icon"><i class="bi bi-shield-x"></i></div><div><strong>{{ e.description }}</strong><span>{{ e.purpose }} · {{ money(e.amount) }}</span></div><em>{{ e.rejection_reason }}</em></div>{% endfor %}</section>{% endif %}
+{% endblock %}

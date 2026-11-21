@@ -1,0 +1,290 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block crumb %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+    <div>
+        <div class="eyebrow">OVERVIEW</div>
+        <h1>
+            Good evening,
+            {{ 'Admin' if session.get('is_admin') else (session.get('user_name') or 'Donor') }}
+            <span>✦</span>
+        </h1>
+        <p>Here’s how your protected funds are doing today.</p>
+    </div>
+
+    {% if not session.get('is_admin') %}
+    <a class="btn-primary" href="{{ url_for('donate') }}">
+        <i class="bi bi-plus-lg"></i> Record donation
+    </a>
+    {% endif %}
+</div>
+
+<div class="hero-strip">
+    <div>
+        <div class="hero-icon">
+            <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <div>
+            <strong>Purpose protection is active</strong>
+            <span>Every expense is checked against its restricted fund before approval.</span>
+        </div>
+    </div>
+
+    {% if session.get('is_admin') %}
+    <a href="{{ url_for('spend') }}">
+        Test a fund <i class="bi bi-arrow-up-right"></i>
+    </a>
+    {% endif %}
+</div>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Total donations</span>
+            <i class="bi bi-arrow-down-left"></i>
+        </div>
+        <strong>{{ money(total_donations) }}</strong>
+        <small>
+            {{ donation_count }} donation{{ '' if donation_count == 1 else 's' }} recorded
+        </small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Utilized</span>
+            <i class="bi bi-graph-up-arrow"></i>
+        </div>
+        <strong>{{ money(total_spent) }}</strong>
+        <small>Approved expenses only</small>
+    </div>
+
+    <div class="stat-card accent-card">
+        <div class="stat-top">
+            <span>Available</span>
+            <i class="bi bi-wallet2"></i>
+        </div>
+        <strong>{{ money(total_available) }}</strong>
+        <small>Protected balance</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Protection score</span>
+            <i class="bi bi-shield-check"></i>
+        </div>
+        <strong>{{ trust }}%</strong>
+        <small>
+            {{ blocked_count }} blocked transaction{{ '' if blocked_count == 1 else 's' }}
+        </small>
+    </div>
+
+</div>
+
+<div class="section-grid">
+
+    <section class="panel chart-panel">
+        <div class="panel-head">
+            <div>
+                <h2>Fund allocation</h2>
+                <p>Where protected donations are currently held.</p>
+            </div>
+
+            <a href="{{ url_for('funds') }}">
+                View funds <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="chart-wrap">
+            <canvas
+                id="fundChart"
+                data-funds='{{ funds|tojson }}'>
+            </canvas>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <div>
+                <h2>Fund health</h2>
+                <p>Received vs. remaining by purpose.</p>
+            </div>
+        </div>
+
+        <div class="fund-list">
+
+            {% for f in funds %}
+            <div class="fund-row">
+
+                <div class="fund-icon">{{ f.icon }}</div>
+
+                <div class="fund-info">
+                    <div>
+                        <strong>{{ f.purpose }}</strong>
+                        <span>{{ money(f.available) }} available</span>
+                    </div>
+
+                    <div class="progress">
+                        <span
+                            class="fund-progress"
+                            data-width="{{ (f.spent / f.received * 100) if f.received else 0 }}">
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+</div>
+
+<section class="panel activity-panel">
+
+    <div class="panel-head">
+        <div>
+            <h2>Recent activity</h2>
+            <p>Every movement is recorded in the transaction ledger.</p>
+        </div>
+
+        <a href="{{ url_for('transactions') }}">
+            Open ledger <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    {% if transactions %}
+
+    <div class="table-responsive">
+        <table class="modern-table">
+
+            <thead>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Purpose</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+
+                    <td>
+                        <span class="type-dot {{ 'positive' if t.transaction_type == 'Donation' else ('blocked' if t.transaction_type == 'Blocked' else 'negative') }}"></span>
+
+                        <strong>{{ t.transaction_type }}</strong>
+                        <small>{{ t.description }}</small>
+                    </td>
+
+                    <td>
+                        <span class="tag">{{ t.purpose }}</span>
+                    </td>
+
+                    <td class="{{ 'amount-positive' if t.transaction_type == 'Donation' else 'amount-negative' }}">
+                        {{ '+' if t.transaction_type == 'Donation' else '-' }}{{ money(t.amount) }}
+                    </td>
+
+                    <td>{{ t.created_at }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+        <i class="bi bi-inbox"></i>
+        <h3>No activity yet</h3>
+        <p>No approved donations or transactions have been recorded yet.</p>
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Fund progress bars
+    document.querySelectorAll(".fund-progress").forEach(function (bar) {
+
+        const width = Number(bar.dataset.width) || 0;
+
+        bar.style.width = Math.min(100, Math.max(0, width)) + "%";
+
+    });
+
+
+    // Fund allocation chart
+    const chartCanvas = document.getElementById("fundChart");
+
+    if (chartCanvas && typeof Chart !== "undefined") {
+
+        let fundData = [];
+
+        try {
+            fundData = JSON.parse(chartCanvas.dataset.funds || "[]");
+        } catch (error) {
+            console.error("Unable to read fund chart data:", error);
+        }
+
+        new Chart(chartCanvas, {
+
+            type: "doughnut",
+
+            data: {
+                labels: fundData.map(function (fund) {
+                    return fund.purpose;
+                }),
+
+                datasets: [{
+                    data: fundData.map(function (fund) {
+                        return fund.received;
+                    })
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "72%",
+
+                plugins: {
+                    legend: {
+                        position: "bottom",
+
+                        labels: {
+                            usePointStyle: true,
+                            padding: 18,
+
+                            font: {
+                                family: "DM Sans"
+                            }
+                        }
+                    }
+                }
+            }
+
+        });
+
+    }
+
+});
+</script>
+
+{% endblock %}

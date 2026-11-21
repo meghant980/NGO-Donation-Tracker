@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Spend funds{% endblock %}
+{% block crumb %}Spend funds{% endblock %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">CONTROLLED SPENDING</div><h1>Request an expense</h1><p>NGO Donation Tracker only permits expense categories that belong to the selected donor-protected purpose.</p></div></div>
+<div class="form-layout">
+<section class="panel form-panel">
+<form method="POST" enctype="multipart/form-data">
+  <div class="form-section-title">1. Choose the protected fund</div>
+  <div class="field"><label>Protected fund</label>
+    <select name="purpose" id="spendPurpose" required>
+      {% for f in funds %}<option value="{{ f.purpose }}" data-balance="{{ f.available }}">{{ f.icon }} {{ f.purpose }} · {{ money(f.available) }} available</option>{% endfor %}
+    </select>
+  </div>
+
+  <div class="form-section-title mt-4">2. Choose an allowed expense type</div>
+  <div class="field">
+    <label>Expense category</label>
+    <select name="expense_category" id="expenseCategory" required></select>
+    <small class="field-help">This list changes with the protected fund. You cannot choose an unrelated category.</small>
+  </div>
+
+  <div class="two-fields">
+    <div class="field"><label>Amount</label><div class="input-money"><span>₹</span><input type="number" min="1" step="0.01" name="amount" id="spendAmount" required></div></div>
+    <div class="field"><label>Vendor / recipient <em>optional</em></label><input name="vendor" placeholder="e.g. ABC Hospital"></div>
+  </div>
+  <div class="field"><label>What was purchased / paid for?</label><textarea name="description" rows="3" placeholder="e.g. 20 textbooks for Class 8 students" required></textarea></div>
+  <div class="field"><label>Receipt <em>recommended</em></label><input type="file" name="receipt" accept=".jpg,.jpeg,.png,.pdf"></div>
+
+  <div class="purpose-lock-box"><i class="bi bi-lock-fill"></i><div><strong>Purpose lock</strong><span id="lockText">This expense will be checked against the selected fund.</span></div></div>
+  <div class="approval-box" id="approvalBox"><i class="bi bi-shield-check"></i><div><strong>Ready for validation</strong><span>Submit to validate category and available balance.</span></div></div>
+  <button class="btn-primary wide" type="submit"><i class="bi bi-shield-check"></i> Validate & record expense</button>
+</form>
+</section>
+<aside class="rule-card">
+<div class="rule-icon"><i class="bi bi-shield-lock-fill"></i></div><h2>Money cannot change purpose</h2>
+<p class="rule-intro">A Medical donation cannot be used as a general-purpose wallet.</p>
+<div class="rule-step"><b>01</b><span><strong>Donor selects purpose</strong><small>Example: ₹10,000 → Medical.</small></span></div>
+<div class="rule-step"><b>02</b><span><strong>System limits categories</strong><small>Only medicines, treatment, tests, hospital bills and medical supplies are available.</small></span></div>
+<div class="rule-step"><b>03</b><span><strong>Invalid spending is blocked</strong><small>The request never reduces the protected balance.</small></span></div>
+</aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const allowed = {{ allowed_expenses|tojson }};
+const purpose = document.getElementById('spendPurpose');
+const category = document.getElementById('expenseCategory');
+const amount = document.getElementById('spendAmount');
+const box = document.getElementById('approvalBox');
+const lockText = document.getElementById('lockText');
+
+function updateCategories(){
+  const p = purpose.value;
+  category.innerHTML = '';
+  (allowed[p] || []).forEach(item => {
+    const o=document.createElement('option'); o.value=item; o.textContent=item; category.appendChild(o);
+  });
+  lockText.textContent = 'Only '+p+'-related expense categories can be submitted.';
+  checkSpend();
+}
+function checkSpend(){
+  const b=Number(purpose.options[purpose.selectedIndex].dataset.balance||0);
+  const v=Number(amount.value||0);
+  if(!v){box.className='approval-box';box.innerHTML='<i class="bi bi-shield-check"></i><div><strong>Ready for validation</strong><span>Submit to validate category and available balance.</span></div>';return}
+  if(v>b){box.className='approval-box danger';box.innerHTML='<i class="bi bi-x-circle-fill"></i><div><strong>Will be blocked</strong><span>Only ₹'+b.toLocaleString('en-IN')+' is available in this protected fund.</span></div>'}
+  else{box.className='approval-box good';box.innerHTML='<i class="bi bi-check-circle-fill"></i><div><strong>Balance available</strong><span>₹'+(b-v).toLocaleString('en-IN')+' will remain after this expense.</span></div>'}
+}
+purpose.addEventListener('change',updateCategories); amount.addEventListener('input',checkSpend);
+updateCategories();
+</script>
+{% endblock %}

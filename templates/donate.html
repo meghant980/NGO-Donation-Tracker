@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Record donation{% endblock %}
+{% block crumb %}Record donation{% endblock %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">INCOMING FUNDS</div><h1>Record a donation</h1><p>Every donation is assigned a purpose and protected from unrelated spending.</p></div></div>
+<div class="form-layout">
+  <section class="panel form-panel">
+    <form method="POST" onsubmit="return validateDonation()">
+      <div class="form-section-title">Donor details</div>
+      <div class="field"><label>Donor name</label><input name="donor_name" id="donor_name" placeholder="e.g. Priya Sharma" required></div>
+      <div class="two-fields">
+        <div class="field"><label>Amount</label><div class="input-money"><span>₹</span><input type="number" min="1" step="0.01" name="amount" id="donation_amount" placeholder="10,000" required></div></div>
+        <div class="field"><label>Note <em>optional</em></label><input name="note" placeholder="Thank you for supporting students"></div>
+      </div>
+      <div class="form-section-title mt-4">Choose the protected purpose</div>
+      <div class="purpose-grid">
+      {% for key, meta in purposes.items() %}
+        <label class="purpose-option"><input type="radio" name="purpose" value="{{ key }}" {% if loop.first %}checked{% endif %}><span class="purpose-card"><b>{{ meta.icon }}</b><strong>{{ key }}</strong><small>{{ meta.description }}</small></span></label>
+      {% endfor %}
+      </div>
+      <div class="lock-note"><i class="bi bi-lock-fill"></i><div><strong>This donation will be purpose-locked.</strong><span>The NGO can only spend this fund on the selected purpose, and the system will block invalid expenses.</span></div></div>
+      <div class="lock-note mt-3"><i class="bi bi-qr-code"></i><div><strong>Demo QR only — no real payment.</strong><span>This QR displays a unique donation reference. It does not transfer money or verify a UPI payment. A payment gateway/NGO UPI integration is required for live payments.</span></div></div>
+      <button class="btn-primary wide" type="submit"><i class="bi bi-qr-code"></i> Generate donation QR</button>
+    </form>
+  </section>
+  <aside class="preview-card">
+    <div class="preview-top"><span>DONATION PREVIEW</span><i class="bi bi-shield-lock-fill"></i></div>
+    <div class="preview-amount" id="previewAmount">₹0</div>
+    <div class="preview-purpose" id="previewPurpose">Education</div>
+    <div class="preview-line"><span>Protection</span><strong class="green">Purpose locked</strong></div>
+    <div class="preview-line"><span>Can be spent on</span><strong id="previewDesc">Education only</strong></div>
+    <div class="preview-bottom"><i class="bi bi-info-circle"></i> Donors can verify this allocation from the Transparency page.</div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}<script>
+const amountInput=document.getElementById('donation_amount'), pa=document.getElementById('previewAmount');
+amountInput.addEventListener('input',()=>pa.textContent='₹'+(Number(amountInput.value)||0).toLocaleString('en-IN'));
+document.querySelectorAll('input[name="purpose"]').forEach(x=>x.addEventListener('change',()=>{document.getElementById('previewPurpose').textContent=x.value;document.getElementById('previewDesc').textContent=x.value+' only';}));
+function validateDonation(){return !!document.querySelector('input[name="purpose"]:checked');}
+</script>{% endblock %}

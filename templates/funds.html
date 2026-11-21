@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Protected funds{% endblock %}
+{% block crumb %}Protected funds{% endblock %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">FUND CONTROL</div><h1>Protected funds</h1><p>Each purpose has its own balance. Money never silently moves between purposes.</p></div><a class="btn-primary" href="{{ url_for('spend') }}"><i class="bi bi-arrow-down-circle"></i> Spend funds</a></div>
+<div class="fund-card-grid">
+{% for f in funds %}
+<div class="fund-card">
+  <div class="fund-card-top"><div class="big-fund-icon">{{ f.icon }}</div><span class="status-badge"><i class="bi bi-lock-fill"></i> Locked</span></div>
+  <h3>{{ f.purpose }}</h3><p>{{ f.description }}</p>
+  <div class="fund-money">{{ money(f.available) }} <small>available</small></div>
+  <div class="progress large"><span style="width: {{ (f.spent/f.received*100) if f.received else 0 }}%"></span></div>
+  <div class="fund-meta"><span>{{ money(f.spent) }} spent</span><span>{{ money(f.received) }} received</span></div>
+</div>
+{% endfor %}
+</div>
+<section class="panel mt-4"><div class="panel-head"><div><h2>Latest donations</h2><p>Recent funds added to protected buckets.</p></div><a href="{{ url_for('donate') }}">Add donation <i class="bi bi-arrow-right"></i></a></div>
+<div class="table-responsive"><table class="modern-table"><thead><tr><th>Donor</th><th>Purpose</th><th>Amount</th><th>Date</th></tr></thead><tbody>
+{% for d in donations %}<tr><td><strong>{{ d.donor_name }}</strong><small>{{ d.note or 'Purpose-restricted donation' }}</small></td><td><span class="tag">{{ d.purpose }}</span></td><td class="amount-positive">+{{ money(d.amount) }}</td><td>{{ d.created_at }}</td></tr>{% else %}<tr><td colspan="4"><div class="empty compact"><i class="bi bi-inbox"></i><p>No donations recorded.</p></div></td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

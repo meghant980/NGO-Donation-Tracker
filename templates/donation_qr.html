@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Donation QR{% endblock %}
+{% block crumb %}Donation QR{% endblock %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">DONATION REFERENCE</div><h1>Your donation QR</h1><p>Scan this QR with a phone camera to open the virtual demo payment page.</p></div></div>
+<section class="panel p-4" style="max-width:760px;margin:auto;text-align:center">
+  <img src="{{ url_for('static', filename=qr_file) }}" alt="Demo donation QR code" style="width:230px;max-width:100%;height:auto;background:white;padding:12px;border-radius:12px">
+  <h2 class="mt-3">{{ money(donation.amount) }}</h2>
+  <p class="text-muted mb-1">{{ donation.purpose }} donation</p>
+  <p><strong>Donor:</strong> {{ donation.donor_name }}</p>
+  <p><strong>Reference:</strong> {{ donation.qr_reference }}</p>
+  <p><strong>Request status:</strong> <span class="badge text-bg-warning">{{ donation.status }}</span></p>
+  <p><strong>Payment status:</strong> {{ donation.payment_status }}</p>
+  <div class="lock-note mt-3" style="text-align:left"><i class="bi bi-info-circle"></i><div><strong>Demo payment only — no real money is transferred.</strong><span>Scanning opens a demo payment page. Press Pay Demo on your phone to simulate payment. No bank, UPI or wallet is charged. The donation remains pending until Admin approval.</span></div></div>
+  <a class="btn-primary mt-3" href="{{ url_for('demo_payment', reference=donation.qr_reference) }}">Open demo payment on this device</a>
+  <a class="btn-primary mt-3" href="{{ url_for('donate') }}">Submit another donation</a>
+</section>
+{% endblock %}
