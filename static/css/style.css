@@ -1,0 +1,1627 @@
+
+/* =========================================
+   1. ROOT VARIABLES
+========================================= */
+
+:root {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --text: #151820;
+    --muted: #737887;
+    --line: #e8eaf0;
+
+    --primary: #5b4df6;
+    --primary2: #7569ff;
+
+    --green: #12a76b;
+    --red: #e5484d;
+    --amber: #d88900;
+
+    --shadow: 0 10px 35px rgba(30, 32, 50, 0.06);
+    --radius: 18px;
+}
+
+
+/* =========================================
+   2. GLOBAL STYLES
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+.brand-name {
+    font-family: "Space Grotesk", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================================
+   3. MAIN APP LAYOUT
+========================================= */
+
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background: #10111a;
+    color: #ffffff;
+    padding: 26px 16px 18px;
+    position: fixed;
+    inset: 0 auto 0 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+}
+
+.main {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-width: 0;
+}
+
+
+/* =========================================
+   4. BRAND / LOGO
+========================================= */
+
+.brand {
+    display: flex;
+    gap: 11px;
+    align-items: center;
+    padding: 0 10px 30px;
+}
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6f63ff, #4b3ef0);
+    display: grid;
+    place-items: center;
+    font-size: 17px;
+    box-shadow: 0 8px 22px rgba(91, 77, 246, 0.35);
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.brand-sub {
+    font-size: 10px;
+    color: #898c9b;
+    margin-top: 1px;
+}
+
+
+/* =========================================
+   5. SIDEBAR NAVIGATION
+========================================= */
+
+.nav-label {
+    color: #6f7282;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 0 12px 9px;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-link {
+    color: #a8abb9;
+    padding: 11px 12px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.nav-link i {
+    font-size: 16px;
+    width: 18px;
+}
+
+.nav-link:hover {
+    background: #1a1b27;
+    color: #ffffff;
+}
+
+.nav-link.active {
+    background: #242335;
+    color: #ffffff;
+    box-shadow: inset 3px 0 0 #7368ff;
+}
+
+.nav-link.active i {
+    color: #8378ff;
+}
+
+
+/* =========================================
+   6. SIDEBAR FOOTER / USER PROFILE
+========================================= */
+
+.sidebar-footer {
+    margin-top: auto;
+}
+
+.security-card {
+    display: flex;
+    gap: 10px;
+    background: #181923;
+    border: 1px solid #292a37;
+    border-radius: 14px;
+    padding: 12px;
+    margin: 8px 3px 18px;
+}
+
+.security-card > i {
+    color: #65dba6;
+    font-size: 18px;
+}
+
+.security-card strong,
+.security-card span,
+.user-mini strong,
+.user-mini span {
+    display: block;
+}
+
+.security-card strong {
+    font-size: 11px;
+}
+
+.security-card span {
+    color: #777b8a;
+    font-size: 10px;
+    margin-top: 3px;
+    line-height: 1.35;
+}
+
+.user-mini {
+    border-top: 1px solid #282934;
+    padding: 15px 4px 0;
+    display: flex;
+    gap: 9px;
+    align-items: center;
+}
+
+.avatar,
+.top-avatar {
+    background: #2b2d3c;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+}
+
+.user-mini strong {
+    font-size: 12px;
+}
+
+.user-mini span {
+    font-size: 10px;
+    color: #777b8a;
+    margin-top: 2px;
+}
+
+
+/* =========================================
+   7. TOP NAVIGATION BAR
+========================================= */
+
+.topbar {
+    height: 70px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    padding: 0 38px;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.crumb {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: #9295a2;
+    font-size: 12px;
+}
+
+.crumb i {
+    font-size: 9px;
+}
+
+.crumb strong {
+    color: #22242d;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.live-pill {
+    background: #eefaf5;
+    color: #16865b;
+    border: 1px solid #d7f2e5;
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #19b775;
+    margin-right: 5px;
+}
+
+.icon-btn {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--line);
+    background: #ffffff;
+    border-radius: 10px;
+    color: #6e7280;
+}
+
+.top-avatar {
+    width: 34px;
+    height: 34px;
+    background: #e9e6ff;
+    color: #5548df;
+    font-size: 11px;
+}
+
+.mobile-toggle {
+    display: none;
+}
+
+
+/* =========================================
+   8. MAIN CONTENT
+========================================= */
+
+.content {
+    padding: 34px 38px 20px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+.footer {
+    color: #a0a3ae;
+    font-size: 10px;
+    padding: 12px 38px 20px;
+}
+
+
+/* =========================================
+   9. PAGE HEADING
+========================================= */
+
+.page-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 24px;
+}
+
+.eyebrow {
+    color: #6c61f5;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+}
+
+.page-head h1 {
+    font-size: 29px;
+    margin: 0 0 5px;
+    letter-spacing: -0.04em;
+}
+
+.page-head h1 span {
+    color: #7368ff;
+}
+
+.page-head p {
+    margin: 0;
+    color: var(--muted);
+}
+
+
+/* =========================================
+   10. BUTTONS
+========================================= */
+
+.btn-primary,
+.btn-secondary {
+    border: 0;
+    border-radius: 11px;
+    padding: 11px 15px;
+    font-weight: 700;
+    font-size: 12px;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(91, 77, 246, 0.22);
+}
+
+.btn-primary:hover {
+    background: #4d40e7;
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    color: #40434e;
+}
+
+.wide {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+}
+
+
+/* =========================================
+   11. HERO STRIP
+========================================= */
+
+.hero-strip {
+    background: linear-gradient(100deg, #18172b, #242044);
+    color: #ffffff;
+    border-radius: 17px;
+    padding: 17px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.hero-strip > div {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.hero-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #4c43a4;
+    display: grid;
+    place-items: center;
+}
+
+.hero-strip strong,
+.hero-strip span {
+    display: block;
+}
+
+.hero-strip strong {
+    font-size: 12px;
+}
+
+.hero-strip span {
+    font-size: 10px;
+    color: #b8b6ca;
+    margin-top: 3px;
+}
+
+.hero-strip > a {
+    color: #bdb8ff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   12. DASHBOARD STATISTICS
+========================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 19px;
+    box-shadow: var(--shadow);
+}
+
+.stat-card.accent-card {
+    background: linear-gradient(135deg, #5b4df6, #7569ff);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    color: #8b8e9b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.accent-card .stat-top {
+    color: #dcd9ff;
+}
+
+.stat-top i {
+    font-size: 16px;
+}
+
+.stat-card > strong {
+    font-family: "Space Grotesk";
+    font-size: 27px;
+    display: block;
+    margin: 11px 0 4px;
+    letter-spacing: -0.04em;
+}
+
+.stat-card small {
+    color: #9699a4;
+    font-size: 10px;
+}
+
+.accent-card small {
+    color: #dedbff;
+}
+
+
+/* =========================================
+   13. DASHBOARD PANELS
+========================================= */
+
+.section-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 20px;
+}
+
+.panel {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.panel-head {
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+}
+
+.panel-head h2 {
+    font-size: 15px;
+    margin: 0 0 3px;
+}
+
+.panel-head p {
+    margin: 0;
+    color: #979aa5;
+    font-size: 10px;
+}
+
+.panel-head > a {
+    font-size: 10px;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+
+/* =========================================
+   14. FUND ALLOCATION CHART
+========================================= */
+
+.chart-wrap {
+    height: 280px;
+    padding: 20px;
+}
+
+
+/* =========================================
+   15. FUND HEALTH AND PROGRESS BARS
+========================================= */
+
+.fund-list {
+    padding: 12px 20px 20px;
+}
+
+.fund-row {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+}
+
+.fund-icon {
+    width: 34px;
+    height: 34px;
+    background: #f4f3ff;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+}
+
+.fund-info {
+    flex: 1;
+}
+
+.fund-info > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    margin: 1px 0 8px;
+}
+
+.fund-info span {
+    color: #777b87;
+}
+
+.progress {
+    height: 6px;
+    background: #eff0f4;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progress span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #6b5ff7, #8b82ff);
+    border-radius: 99px;
+}
+
+/* Dashboard dynamic progress width */
+.fund-progress {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    transition: width 0.4s ease;
+}
+
+
+/* =========================================
+   16. RECENT ACTIVITY TABLE
+========================================= */
+
+.activity-panel {
+    margin-top: 20px;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modern-table th {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9b9ea8;
+    font-weight: 800;
+    background: #fafafd;
+    padding: 11px 18px;
+    text-align: left;
+}
+
+.modern-table td {
+    padding: 13px 18px;
+    border-top: 1px solid #f0f1f5;
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.modern-table td small {
+    display: block;
+    color: #999ca6;
+    font-size: 9px;
+    margin-top: 3px;
+    max-width: 350px;
+}
+
+.type-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 7px;
+    background: #aaaaaa;
+}
+
+.type-dot.positive {
+    background: #18b977;
+}
+
+.type-dot.negative {
+    background: #ef5960;
+}
+
+.type-dot.blocked {
+    background: #d99013;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 8px;
+    background: #f3f2ff;
+    color: #5a50d7;
+    border-radius: 7px;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.amount-positive {
+    color: #139664;
+    font-weight: 800;
+}
+
+.amount-negative {
+    color: #db4d55;
+    font-weight: 800;
+}
+
+
+/* =========================================
+   17. EMPTY STATE
+========================================= */
+
+.empty {
+    text-align: center;
+    padding: 50px 20px;
+    color: #a2a5ae;
+}
+
+.empty i {
+    font-size: 30px;
+    color: #c6c8d1;
+}
+
+.empty h3 {
+    font-size: 15px;
+    color: #555555;
+}
+
+.empty p {
+    font-size: 11px;
+}
+
+.empty.compact {
+    padding: 25px;
+}
+
+
+/* =========================================
+   18. FLASH MESSAGES
+========================================= */
+
+.flash-stack {
+    position: fixed;
+    top: 82px;
+    right: 28px;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 390px;
+}
+
+.flash {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 13px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    font-size: 11px;
+}
+
+.flash-success > i {
+    color: #12a76b;
+}
+
+.flash-error > i {
+    color: #e5484d;
+}
+
+.flash button {
+    margin-left: auto;
+    border: 0;
+    background: none;
+    color: #999999;
+}
+
+
+/* =========================================
+   19. FORMS
+========================================= */
+
+.form-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+    align-items: start;
+}
+
+.form-panel {
+    padding: 25px;
+}
+
+.form-section-title {
+    font-family: "Space Grotesk";
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: #555966;
+    margin-bottom: 7px;
+}
+
+.field em {
+    font-style: normal;
+    color: #a0a3ad;
+    font-weight: 500;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    border: 1px solid #e1e3e9;
+    border-radius: 10px;
+    padding: 11px 12px;
+    font: inherit;
+    font-size: 12px;
+    outline: none;
+    background: #ffffff;
+    transition: 0.2s;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: #8d84ff;
+    box-shadow: 0 0 0 3px #eeecff;
+}
+
+.two-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+.input-money {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e1e3e9;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.input-money span {
+    padding-left: 12px;
+    color: #777777;
+}
+
+.input-money input {
+    border: 0;
+    border-radius: 0;
+}
+
+
+/* =========================================
+   20. DONATION PURPOSE OPTIONS
+========================================= */
+
+.purpose-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.purpose-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.purpose-card {
+    display: flex;
+    flex-direction: column;
+    padding: 13px;
+    border: 1px solid #e4e5ea;
+    border-radius: 12px;
+    cursor: pointer;
+    height: 100%;
+    transition: 0.2s;
+}
+
+.purpose-card b {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.purpose-card strong {
+    font-size: 11px;
+}
+
+.purpose-card small {
+    font-size: 9px;
+    color: #979aa5;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.purpose-option input:checked + .purpose-card {
+    border-color: #6c61f5;
+    background: #f7f6ff;
+    box-shadow: 0 0 0 2px #e8e5ff;
+}
+
+.lock-note {
+    background: #f5fbf8;
+    border: 1px solid #d9f0e5;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.lock-note > i {
+    color: #16a66c;
+}
+
+.lock-note strong,
+.lock-note span {
+    display: block;
+}
+
+.lock-note strong {
+    font-size: 10px;
+}
+
+.lock-note span {
+    font-size: 9px;
+    color: #6f8b7e;
+    margin-top: 3px;
+}
+
+
+/* =========================================
+   21. DONATION PREVIEW
+========================================= */
+
+.preview-card,
+.rule-card {
+    background: #11121b;
+    color: #ffffff;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 94px;
+}
+
+.preview-top {
+    display: flex;
+    justify-content: space-between;
+    color: #8f91a2;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+.preview-top i {
+    color: #7e73ff;
+}
+
+.preview-amount {
+    font-family: "Space Grotesk";
+    font-size: 38px;
+    font-weight: 700;
+    margin-top: 45px;
+    letter-spacing: -0.04em;
+}
+
+.preview-purpose {
+    color: #a9a4ff;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 28px;
+}
+
+.preview-line {
+    border-top: 1px solid #292a35;
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+}
+
+.preview-line span {
+    color: #838695;
+}
+
+.preview-line strong {
+    font-size: 10px;
+}
+
+.green {
+    color: #55d99e;
+}
+
+.preview-bottom {
+    background: #1a1b25;
+    border-radius: 10px;
+    padding: 11px;
+    font-size: 9px;
+    color: #999bab;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+.preview-bottom i {
+    color: #8378ff;
+    margin-right: 4px;
+}
+
+
+/* =========================================
+   22. PROTECTED FUND CARDS
+========================================= */
+
+.fund-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.fund-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 17px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+}
+
+.fund-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.big-fund-icon {
+    font-size: 22px;
+}
+
+.status-badge {
+    font-size: 8px;
+    color: #16865b;
+    background: #effaf5;
+    border-radius: 999px;
+    padding: 5px 7px;
+    font-weight: 800;
+}
+
+.fund-card h3 {
+    font-size: 15px;
+    margin: 14px 0 4px;
+}
+
+.fund-card p {
+    font-size: 9px;
+    color: #9497a2;
+    min-height: 31px;
+    line-height: 1.45;
+}
+
+.fund-money {
+    font-family: "Space Grotesk";
+    font-size: 23px;
+    font-weight: 700;
+    margin: 14px 0 8px;
+}
+
+.fund-money small {
+    font-family: "DM Sans";
+    font-size: 9px;
+    color: #999999;
+}
+
+.progress.large {
+    height: 7px;
+}
+
+.fund-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #989ba5;
+    font-size: 9px;
+    margin-top: 7px;
+}
+
+
+/* =========================================
+   23. APPROVAL AND RULE CARDS
+========================================= */
+
+.approval-box {
+    border: 1px solid #e4e5ea;
+    background: #fafafd;
+    border-radius: 11px;
+    padding: 11px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.approval-box i {
+    font-size: 18px;
+    color: #8a8d99;
+}
+
+.approval-box strong,
+.approval-box span {
+    display: block;
+}
+
+.approval-box strong {
+    font-size: 10px;
+}
+
+.approval-box span {
+    font-size: 9px;
+    color: #9497a2;
+    margin-top: 2px;
+}
+
+.approval-box.good {
+    background: #f1fbf6;
+    border-color: #d4f0e2;
+}
+
+.approval-box.good i {
+    color: #15a66c;
+}
+
+.approval-box.danger {
+    background: #fff4f4;
+    border-color: #f5d6d7;
+}
+
+.approval-box.danger i {
+    color: #e5484d;
+}
+
+.rule-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 13px;
+    background: #302b60;
+    color: #938aff;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.rule-card h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.rule-step {
+    display: flex;
+    gap: 12px;
+    padding: 13px 0;
+    border-top: 1px solid #292a35;
+}
+
+.rule-step > b {
+    color: #8177ff;
+    font-family: "Space Grotesk";
+}
+
+.rule-step strong,
+.rule-step small {
+    display: block;
+}
+
+.rule-step strong {
+    font-size: 10px;
+}
+
+.rule-step small {
+    font-size: 9px;
+    color: #878a9a;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+
+/* =========================================
+   24. FILTER BAR AND SEARCH
+========================================= */
+
+.filter-bar {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 10px;
+}
+
+.search-box {
+    flex: 1;
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    left: 11px;
+    top: 10px;
+    color: #999999;
+}
+
+.search-box input,
+.filter-bar select {
+    border: 1px solid #e2e3e8;
+    border-radius: 9px;
+    padding: 9px 11px;
+    font: inherit;
+    font-size: 10px;
+    outline: none;
+}
+
+.search-box input {
+    width: 100%;
+    padding-left: 30px;
+}
+
+.filter-bar select {
+    min-width: 130px;
+}
+
+
+/* =========================================
+   25. TRANSACTION TYPE LABELS
+========================================= */
+
+.type-pill {
+    font-size: 9px;
+    font-weight: 800;
+    border-radius: 999px;
+    padding: 5px 8px;
+    background: #f0f0f4;
+    color: #6b6e78;
+}
+
+.type-pill.donation {
+    background: #ecfaf4;
+    color: #13875d;
+}
+
+.type-pill.expense {
+    background: #fff1f1;
+    color: #d04a50;
+}
+
+.type-pill.blocked {
+    background: #fff7e8;
+    color: #b47a11;
+}
+
+
+/* =========================================
+   26. BLOCKED TRANSACTIONS
+========================================= */
+
+.blocked-list {
+    padding: 0 18px;
+}
+
+.blocked-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f1f4;
+}
+
+.blocked-item:last-child {
+    border-bottom: 0;
+}
+
+.blocked-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #fff1f1;
+    color: #df5056;
+    display: grid;
+    place-items: center;
+}
+
+.blocked-item > div:nth-child(2) {
+    flex: 1;
+}
+
+.blocked-item strong,
+.blocked-item span {
+    display: block;
+}
+
+.blocked-item strong {
+    font-size: 10px;
+}
+
+.blocked-item span {
+    font-size: 9px;
+    color: #999ca6;
+    margin-top: 3px;
+}
+
+.blocked-item em {
+    font-size: 9px;
+    color: #d05a5e;
+    max-width: 330px;
+    text-align: right;
+}
+
+
+/* =========================================
+   27. TRANSPARENCY SECTION
+========================================= */
+
+.transparency-hero {
+    background: linear-gradient(115deg, #171727, #302866);
+    color: #ffffff;
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.shield-xl {
+    width: 58px;
+    height: 58px;
+    background: #4a4292;
+    border-radius: 17px;
+    display: grid;
+    place-items: center;
+    font-size: 27px;
+    color: #a9a2ff;
+}
+
+.transparency-hero span {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: #aaa5cf;
+    font-weight: 800;
+}
+
+.transparency-hero h2 {
+    font-size: 22px;
+    margin: 5px 0;
+}
+
+.transparency-hero p {
+    margin: 0;
+    color: #b6b4c6;
+    font-size: 10px;
+}
+
+.mini-trans-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: var(--shadow);
+}
+
+.mini-trans-card > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mini-trans-card strong {
+    font-size: 11px;
+}
+
+.mini-trans-card > b {
+    display: block;
+    font-family: "Space Grotesk";
+    font-size: 19px;
+    margin-top: 12px;
+}
+
+.mini-trans-card small {
+    color: #999ca5;
+    font-size: 9px;
+}
+
+
+/* =========================================
+   28. ADDITIONAL HELPERS
+========================================= */
+
+.mt-4 {
+    margin-top: 20px !important;
+}
+
+.field-help {
+    display: block;
+    color: #9296a2;
+    font-size: 9px;
+    margin-top: 6px;
+}
+
+.purpose-lock-box {
+    background: #f6f4ff;
+    border: 1px solid #e4e0ff;
+    border-radius: 11px;
+    padding: 11px;
+    display: flex;
+    gap: 9px;
+    margin: 12px 0;
+}
+
+.purpose-lock-box > i {
+    color: #6256ed;
+}
+
+.purpose-lock-box strong,
+.purpose-lock-box span {
+    display: block;
+}
+
+.purpose-lock-box strong {
+    font-size: 10px;
+}
+
+.purpose-lock-box span {
+    font-size: 9px;
+    color: #77718e;
+    margin-top: 2px;
+}
+
+.rule-intro {
+    font-size: 10px;
+    color: #aaaabd;
+    line-height: 1.5;
+    margin: -8px 0 14px;
+}
+
+
+/* =========================================
+   29. RESPONSIVE DESIGN - TABLETS
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .stats-grid,
+    .fund-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-grid,
+    .form-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .preview-card,
+    .rule-card {
+        position: static;
+    }
+
+    .form-layout .preview-card,
+    .form-layout .rule-card {
+        order: -1;
+    }
+
+    .sidebar {
+        width: 220px;
+    }
+
+    .main {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+    }
+}
+
+
+/* =========================================
+   30. RESPONSIVE DESIGN - MOBILE
+========================================= */
+
+@media (max-width: 760px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: 0.25s;
+        width: 260px;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .topbar {
+        padding: 0 17px;
+    }
+
+    .mobile-toggle {
+        display: block;
+        border: 0;
+        background: none;
+        font-size: 22px;
+        color: #555555;
+        margin-right: 10px;
+    }
+
+    .crumb {
+        flex: 1;
+    }
+
+    .live-pill {
+        display: none;
+    }
+
+    .content {
+        padding: 24px 16px;
+    }
+
+    .footer {
+        padding: 12px 16px;
+    }
+
+    .page-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .stats-grid,
+    .fund-card-grid,
+    .purpose-grid,
+    .two-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .page-head h1 {
+        font-size: 25px;
+    }
+
+    .hero-strip {
+        align-items: flex-start;
+        gap: 12px;
+        flex-direction: column;
+    }
+
+    .topbar .crumb {
+        font-size: 10px;
+    }
+
+    .blocked-item {
+        align-items: flex-start;
+    }
+
+    .blocked-item em {
+        max-width: 150px;
+    }
+
+    .panel-head {
+        gap: 10px;
+    }
+
+    .chart-wrap {
+        height: 240px;
+    }
+}
+
+
+/* =========================================
+   31. PRINT STYLES
+========================================= */
+
+@media print {
+
+    .sidebar,
+    .topbar,
+    .btn-secondary,
+    .footer {
+        display: none !important;
+    }
+
+    .main {
+        margin: 0;
+        width: 100%;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .panel {
+        box-shadow: none;
+    }
+}
